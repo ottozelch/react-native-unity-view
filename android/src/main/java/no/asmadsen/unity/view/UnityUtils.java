@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import com.unity3d.player.UnityPlayer;
 import java.util.concurrent.CopyOnWriteArraySet;
+import android.util.Log;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -82,15 +83,16 @@ public class UnityUtils {
 
     public static void pause() {
         if (unityPlayer != null) {
-            unityPlayer.pause();
+            Log.i("Unity", "UnityUtils PAUSE");
             _isUnityPaused = true;
+            unityPlayer.pause();
         }
     }
 
     public static void resume() {
         if (unityPlayer != null) {
-            unityPlayer.resume();
             _isUnityPaused = false;
+            unityPlayer.resume();
         }
     }
 
