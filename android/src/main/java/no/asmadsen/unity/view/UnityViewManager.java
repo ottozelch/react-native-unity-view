@@ -8,6 +8,7 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import java.util.Map;
 import javax.annotation.Nullable;
+import android.util.Log;
 
 public class UnityViewManager extends SimpleViewManager<UnityView>
         implements LifecycleEventListener, View.OnAttachStateChangeListener {
@@ -54,6 +55,7 @@ public class UnityViewManager extends SimpleViewManager<UnityView>
     public void onHostResume() {
         if (UnityUtils.isUnityReady()) {
             UnityUtils.getPlayer().resume();
+            Log.i("Unity", "onHostResume() restoreUnityUserState()");
             restoreUnityUserState();
         }
     }
@@ -62,6 +64,7 @@ public class UnityViewManager extends SimpleViewManager<UnityView>
     public void onHostPause() {
         if (UnityUtils.isUnityReady()) {
             // Don't use UnityUtils.pause()
+            Log.i("Unity", "onHostPause() PAUSE");
             UnityUtils.getPlayer().pause();
         }
     }
@@ -80,16 +83,18 @@ public class UnityViewManager extends SimpleViewManager<UnityView>
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (UnityUtils.getPlayer() != null) {
+                    if (UnityUtils.getPlayer() != null && UnityUtils.isUnityPaused()) {
+                        Log.i("Unity", "restoreUnityUserState() PAUSE");
                         UnityUtils.getPlayer().pause();
                     }
                 }
-            }, 300); //TODO: 300 is the right one?
+            }, 200); //TODO: 300 is the right one?
         }
     }
 
     @Override
     public void onViewAttachedToWindow(View v) {
+        Log.i("Unity", "onViewAttachedToWindow() restoreUnityUserState()");
         restoreUnityUserState();
     }
 
